@@ -1,15 +1,15 @@
 # Falcon-7B Grammar Correction Fine-tuning
 
-This project fine-tunes the Falcon-7B model for grammar correction tasks using LoRA (Low-Rank Adaptation) and 4-bit quantization for efficient training.
+This project demonstrates fine-tuning the Falcon-7B model for grammar correction tasks using LoRA (Low-Rank Adaptation) and 4-bit quantization for efficient training. The repository includes the complete pipeline from data preprocessing to model training and evaluation.
 
 ## Overview
 
-This notebook demonstrates how to:
-- Load and quantize the Falcon-7B-Instruct model using 4-bit quantization
-- Prepare a custom grammar correction dataset
-- Fine-tune the model using LoRA with PEFT (Parameter-Efficient Fine-Tuning)
-- Evaluate the model's performance on grammar correction tasks
-- Save and push the fine-tuned model to Hugging Face Hub
+This project showcases:
+- Data preprocessing pipeline for grammar correction datasets
+- Loading and quantizing the Falcon-7B-Instruct model using 4-bit quantization
+- Fine-tuning using LoRA with PEFT (Parameter-Efficient Fine-Tuning)
+- Model evaluation and performance assessment
+- Saving and deploying the fine-tuned model to Hugging Face Hub
 
 ## Model Details
 
@@ -17,6 +17,50 @@ This notebook demonstrates how to:
 - **Fine-tuned Model**: `majed-ai/trained2-grammar-falcon-7b`
 - **Task**: Grammar correction
 - **Method**: LoRA fine-tuning with 4-bit quantization
+
+## Getting Started
+
+### Prerequisites
+- Python 3.8+
+- CUDA-compatible GPU (recommended)
+- Sufficient GPU memory (8GB+ recommended)
+
+### Installation
+
+1. Clone this repository:
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+2. Install required packages:
+```bash
+pip install torch
+pip install bitsandbytes
+pip install datasets
+pip install peft
+pip install accelerate
+pip install loralib
+pip install einops
+pip install transformers
+```
+
+### Running the Project
+
+1. **Data Preprocessing** (optional - datasets are already processed):
+   ```bash
+   python "edit csv.py"
+   ```
+   This script processes the raw dataset and adds instruction prompts.
+
+2. **Model Training**:
+   Open and run the Jupyter notebook:
+   ```bash
+   jupyter notebook "MJ_falcon_7b_finetune_grammar_falcon (1).ipynb"
+   ```
+
+3. **Model Usage**:
+   The trained model is available on Hugging Face Hub: `majed-ai/trained2-grammar-falcon-7b`
 
 ## Requirements
 
@@ -61,15 +105,27 @@ pip install transformers
 
 ## Dataset
 
-The model is trained on a custom grammar correction dataset (`my_grammar1.csv`) containing:
-- **Input**: Grammatically incorrect sentences
-- **Target**: Corrected sentences
-- **Total samples**: 6,004
+The model is trained on a custom grammar correction dataset that went through several preprocessing stages:
 
-Example:
+1. **Raw Data (`dataset3.csv`)**: Original dataset with 9 sample grammar correction pairs
+2. **Intermediate Processing (`my_grammar.csv`)**: Cleaned and indexed version
+3. **Final Training Data (`my_grammar1.csv`)**: Formatted with instruction prompts for fine-tuning
+
+### Dataset Statistics
+- **Format**: CSV with input-target pairs
+- **Sample Size**: 9 examples (expanded to 6,004 in full training)
+- **Task**: Grammar correction with instructional prompting
+
+### Data Processing Pipeline
+The `edit csv.py` script transforms raw sentences into instruction-following format:
+- **Input Format**: `"correct the following sentence: [incorrect sentence]"`
+- **Target Format**: `"[corrected sentence]"`
+
+### Example Transformations
 ```
-Input: "New and new technology has been introduced to the society."
-Target: "New technology has been introduced to society."
+Original Input: "New and new technology has been introduced to the society."
+Processed Input: "correct the following sentence: New and new technology has been introduced to the society."
+Target Output: "New technology has been introduced to society."
 ```
 
 ## Training Results
@@ -137,10 +193,25 @@ model = PeftModel.from_pretrained(model, "majed-ai/trained2-grammar-falcon-7b")
 ```
 .
 ├── MJ_falcon_7b_finetune_grammar_falcon (1).ipynb  # Main training notebook
-├── my_grammar1.csv                                  # Training dataset
-├── experiments/                                     # Training checkpoints
-└── trained-model/                                   # Saved model directory
+├── edit csv.py                                      # Data preprocessing script
+├── dataset3.csv                                     # Original raw dataset
+├── my_grammar.csv                                   # Intermediate processed dataset
+├── my_grammar1.csv                                  # Final training dataset (formatted)
+└── README.md                                        # Project documentation
 ```
+
+## Files Description
+
+### Core Files
+- **`MJ_falcon_7b_finetune_grammar_falcon (1).ipynb`**: Complete Jupyter notebook containing the Falcon-7B fine-tuning pipeline for grammar correction. Includes data loading, model configuration, training, evaluation, and model saving.
+
+### Data Files
+- **`dataset3.csv`**: Original raw dataset containing input-target pairs for grammar correction (9 sample entries)
+- **`my_grammar.csv`**: Intermediate dataset with indexed rows and cleaned formatting
+- **`my_grammar1.csv`**: Final processed training dataset with proper prompt formatting ("correct the following sentence: " prefix added to inputs)
+
+### Utilities
+- **`edit csv.py`**: Python script for preprocessing the dataset, specifically adding the instruction prompt prefix to input sentences for proper model training format
 
 ## Notes
 
