@@ -213,18 +213,3 @@ model = PeftModel.from_pretrained(model, "majed-ai/trained2-grammar-falcon-7b")
 ### Utilities
 - **`edit csv.py`**: Python script for preprocessing the dataset, specifically adding the instruction prompt prefix to input sentences for proper model training format
 
-## Notes
-
-- The model uses gradient checkpointing to reduce memory usage
-- Training was performed on CUDA device 0
-- The notebook includes visualization of training loss over steps
-
-## License
-
-Please refer to the Falcon-7B model license and Hugging Face terms of service.
-
-## Acknowledgments
-
-- Falcon-7B model by TII
-- PEFT library by Hugging Face
-- bitsandbytes for efficient quantization
