@@ -1,4 +1,4 @@
-# Falcon-7B Grammar Correction Fine-tuning -1
+# Falcon-7B Grammar Correction Fine-tuning
 
 This project demonstrates fine-tuning the Falcon-7B model for grammar correction tasks using LoRA (Low-Rank Adaptation) and 4-bit quantization for efficient training. The repository includes the complete pipeline from data preprocessing to model training and evaluation.
 
